@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import continentImg from '../assets/continent.jpg';
 import '../styles/global.css';
 ---
 
@@ -7,7 +9,7 @@ import '../styles/global.css';
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
-    <title>Legendarium | Энциклопедия Великого Континента</title>
+    <title>Legendarium | Энциклопедия Манула</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -31,25 +33,40 @@ import '../styles/global.css';
     </header>
 
     <!-- Главный контент -->
-    <main class="max-w-4xl mx-auto px-6 py-20 my-auto text-center space-y-8">
+    <main class="max-w-4xl mx-auto px-6 py-16 my-auto text-center space-y-8">
       <h1 class="font-['Cinzel'] text-4xl sm:text-6xl font-black text-amber-200/90 tracking-wide leading-tight">
-        Легендариум Континента
+        Манууууууууул
       </h1>
 
       <p class="text-stone-300 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto font-light">
-        Официальная энциклопедия легендариума Великого Континента. Здесь Вы можете найти всю доступную информацию о мире.
+        тут можно просто посмотреть на манула
       </p>
+
+      <!-- Картинка Континента по центру -->
+      <div class="my-8 overflow-hidden rounded-xl border border-amber-900/30 shadow-2xl">
+        <Image 
+          src={continentImg} 
+          alt="Великий Манул" 
+          class="w-full h-auto object-cover"
+        />
+      </div>
 
       <div class="pt-6 border-t border-amber-900/20 max-w-xl mx-auto">
         <p class="text-stone-400 text-base italic leading-relaxed">
-          <span class="font-semibold text-amber-200/80 not-italic">Континент</span> — [определение]
+          <span class="font-semibold text-amber-200/80 not-italic">Манул</span> — древний владыка бескрайних степей, безмолвный повелитель каменистых пустошей и хранитель сурового спокойствия гор. Там, где ветер веками обтачивает скалы, а мороз сковывает землю ледяными оковами, ступает он — пушистый исполин духа, чьё величие не нуждается ни в короне, ни в признании.
+
+Его взгляд хранит мудрость тысячелетий, его мех — сама зима, а его невозмутимость способна пристыдить даже горы. Он не ищет власти, ибо власть принадлежит ему по праву рождения; не вступает в борьбу за превосходство, ибо превосходство его бесспорно; не склоняется перед миром, ибо мир сам замирает перед его присутствием.
+
+Он — манул, воплощение абсолютного достоинства, первозданной свободы и непререкаемого величия. Пока солнце восходит над степями и звёзды загораются над вершинами, он будет сидеть на своём камне, слегка щуриться и всем своим существом выражать одну непреложную истину:
+
+«Я не обязан ничего доказывать. Я манул»
         </p>
       </div>
     </main>
 
     <!-- Подвал -->
     <footer class="border-t border-amber-900/20 py-8 text-right px-6 sm:px-12 text-xs text-stone-500">
-      <p>© 2026 Abhari Tamim. Все права защищены авторским правом.</p>
+      <p>© 2026 Abhari Tamim. Все права защищены манулом.</p>
     </footer>
 
   </body>
