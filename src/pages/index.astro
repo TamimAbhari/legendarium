@@ -1,11 +1,86 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import InteractiveMap from '../components/InteractiveMap.astro';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Legendarium | Хроники и Энциклопедия Вселенной</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[#0a0b0e] text-stone-300 font-sans min-h-screen selection:bg-amber-900 selection:text-amber-100">
+    
+    <!-- Шапка сайта -->
+    <header class="border-b border-amber-900/30 bg-[#0d0f14]/80 backdrop-blur-md sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="text-amber-500 text-2xl">⚜</span>
+          <a href="/" class="font-['Cinzel'] text-2xl font-bold tracking-wider text-amber-100 hover:text-amber-400 transition-colors">
+            LEGENDARIUM
+          </a>
+        </div>
+        <nav class="flex gap-8 text-sm font-medium tracking-wide">
+          <a href="#map" class="hover:text-amber-400 transition-colors">Карта Мира</a>
+          <a href="#lore" class="hover:text-amber-400 transition-colors">Архив Лора</a>
+          <a href="#factions" class="hover:text-amber-400 transition-colors">Фракции</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Главная секция -->
+    <main class="max-w-7xl mx-auto px-6 py-12 space-y-16">
+      
+      <!-- Приветственный баннер -->
+      <section class="text-center space-y-4 max-w-3xl mx-auto py-8">
+        <h1 class="font-['Cinzel'] text-5xl font-black text-amber-200/90 tracking-wide leading-tight">
+          Интерактивный Архив Вселенной
+        </h1>
+        <p class="text-stone-400 text-lg leading-relaxed">
+          Добро пожаловать в официальную энциклопедию. Исследуйте географию, историю, магические дисциплины и летописи фракций.
+        </p>
+      </section>
+
+      <!-- Секция Интерактивной Карты -->
+      <section id="map" class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="font-['Cinzel'] text-2xl font-bold text-amber-100 flex items-center gap-2">
+            <span>🗺</span> Интерактивная Карта
+          </h2>
+          <span class="text-xs text-amber-600/80 uppercase tracking-widest font-semibold">Версия 1.0</span>
+        </div>
+        
+        <InteractiveMap />
+      </section>
+
+      <!-- Карточки категорий лора -->
+      <section id="lore" class="grid md:grid-cols-3 gap-6">
+        <div class="p-6 rounded-xl bg-[#12141c] border border-amber-900/20 hover:border-amber-700/50 transition-all group">
+          <div class="text-amber-500 text-3xl mb-3">🏰</div>
+          <h3 class="font-['Cinzel'] text-xl font-bold text-stone-100 group-hover:text-amber-300 transition-colors mb-2">Королевства и Города</h3>
+          <p class="text-sm text-stone-400 leading-relaxed">География, архитектура, политическое устройство и древние цитадели.</p>
+        </div>
+
+        <div class="p-6 rounded-xl bg-[#12141c] border border-amber-900/20 hover:border-amber-700/50 transition-all group">
+          <div class="text-amber-500 text-3xl mb-3">📜</div>
+          <h3 class="font-['Cinzel'] text-xl font-bold text-stone-100 group-hover:text-amber-300 transition-colors mb-2">Хроники и Эпохи</h3>
+          <p class="text-sm text-stone-400 leading-relaxed">Временные линии, великие войны, катаклизмы и задокументированные летописи.</p>
+        </div>
+
+        <div class="p-6 rounded-xl bg-[#12141c] border border-amber-900/20 hover:border-amber-700/50 transition-all group">
+          <div class="text-amber-500 text-3xl mb-3">✨</div>
+          <h3 class="font-['Cinzel'] text-xl font-bold text-stone-100 group-hover:text-amber-300 transition-colors mb-2">Магия и Артефакты</h3>
+          <p class="text-sm text-stone-400 leading-relaxed">Законы мироздания, гримуары, волшебные руны и реликтовые предметы.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="border-t border-amber-900/20 py-8 mt-20 text-center text-xs text-stone-500">
+      <p>© {new Date().getFullYear()} Legendarium. Все права защищены авторским правом.</p>
+    </footer>
+  </body>
+</html>
