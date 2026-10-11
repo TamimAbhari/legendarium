@@ -1,75 +1,55 @@
 ---
-import { Image } from 'astro:assets';
-import continentImg from '../assets/continent.jpg';
-import '../styles/global.css';
+import Base from '../layouts/Base.astro';
+import { getWorldEntries, groupByCategory } from '../lib/world';
+
+const entries = await getWorldEntries();
+
+// Статьи для знакомства с миром: порядок задаёт автор.
+const startSlugs = ['continent', 'free-people', 'order', 'great-war'];
+const start = startSlugs
+  .map((slug) => entries.find((e) => e.id === slug))
+  .filter((e): e is NonNullable<typeof e> => Boolean(e));
+
+const groups = groupByCategory(entries);
 ---
 
-<html lang="ru">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Legendarium | Энциклопедия Манула</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-[#0a0b0e] text-stone-300 font-sans min-h-screen flex flex-col justify-between selection:bg-amber-900 selection:text-amber-100">
-    
-    <!-- Шапка сайта -->
-    <header class="border-b border-amber-900/30 bg-[#0d0f14]/80 backdrop-blur-md sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <span class="text-amber-500 text-2xl">⚜</span>
-          <a href="/" class="font-['Cinzel'] text-2xl font-bold tracking-wider text-amber-100 hover:text-amber-400 transition-colors">
-            LEGENDARIUM
-          </a>
-        </div>
-        <nav class="flex gap-8 text-sm font-medium tracking-wide">
-          <a href="/" class="text-amber-400 transition-colors">Главная</a>
-          <a href="/wiki" class="hover:text-amber-400 transition-colors">Опыты</a>
-        </nav>
-      </div>
-    </header>
+<Base>
+  <section class="hero">
+    <h1 class="display">Legendarium</h1>
+    <p class="lead">
+      Авторская энциклопедия вымышленного мира: земли, народы, ордена и магия. Здесь собрано то, что
+      известно о нём наверняка.
+    </p>
+    <a class="button" href="/world/">Читать о мире</a>
+  </section>
 
-    <!-- Главный контент -->
-    <main class="max-w-4xl mx-auto px-6 py-16 my-auto text-center space-y-8">
-      <h1 class="font-['Cinzel'] text-4xl sm:text-6xl font-black text-amber-200/90 tracking-wide leading-tight">
-        Манууууууууул
-      </h1>
+  {start.length > 0 && (
+    <section class="section" aria-labelledby="start-title">
+      <h2 class="section-title" id="start-title">С чего начать</h2>
+      <ul class="entry-list">
+        {start.map((entry) => (
+          <li>
+            <a href={`/world/${entry.id}/`}>
+              <span class="entry-title">{entry.data.title}</span>
+              <span class="entry-summary">{entry.data.summary}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 
-      <p class="text-stone-300 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto font-light">
-        тут можно просто посмотреть на манула
-		<br />
-		это типо прикольно
-      </p>
-
-      <!-- Картинка Континента по центру -->
-      <div class="my-8 overflow-hidden rounded-xl border border-amber-900/30 shadow-2xl">
-        <Image 
-          src={continentImg} 
-          alt="Великий Манул" 
-          class="w-full h-auto object-cover"
-        />
-      </div>
-
-      <div class="pt-6 border-t border-amber-900/20 max-w-xl mx-auto">
-        <p class="text-stone-400 text-base italic leading-relaxed">
-          <span class="font-semibold text-amber-200/80 not-italic">Манул</span> — древний владыка бескрайних степей, безмолвный повелитель каменистых пустошей и хранитель сурового спокойствия гор. <br /> 
-		  Там, где ветер веками обтачивает скалы, а мороз сковывает землю ледяными оковами, ступает он — пушистый исполин духа, чьё величие не нуждается ни в короне, ни в признании. <br />
-		  Его взгляд хранит мудрость тысячелетий, его мех — сама зима, а его невозмутимость способна пристыдить даже горы. Он не ищет власти, ибо власть принадлежит ему по праву рождения;
-		  не вступает в борьбу за превосходство, ибо превосходство его бесспорно; не склоняется перед миром, ибо мир сам замирает перед его присутствием. <br />
-		  Он — манул, воплощение абсолютного достоинства, первозданной свободы и непререкаемого величия. Пока солнце восходит над степями и звёзды загораются над вершинами, 
-		  он будет сидеть на своём камне, слегка щуриться и всем своим существом выражать одну непреложную истину: <br />
-		  «Я не обязан ничего доказывать. Я манул»
-        </p>
-      </div>
-    </main>
-
-    <!-- Подвал -->
-    <footer class="border-t border-amber-900/20 py-8 text-right px-6 sm:px-12 text-xs text-stone-500">
-      <p>© 2026 Abhari Tamim. Все права защищены манулом.</p>
-    </footer>
-
-  </body>
-</html>
+  {groups.length > 0 && (
+    <section class="section" aria-labelledby="index-title">
+      <h2 class="section-title" id="index-title">Разделы энциклопедии</h2>
+      <ul class="aside-list" style="columns: 14rem auto; column-gap: 2rem;">
+        {groups.map((group) => (
+          <li>
+            <a href={`/world/#${group.category}`}>{group.category}</a>
+            <span style="color: var(--muted);"> — {group.entries.length}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>

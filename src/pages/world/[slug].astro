@@ -1,0 +1,82 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getWorldEntries, getBacklinks } from '../../lib/world';
+
+export async function getStaticPaths() {
+  const entries = await getWorldEntries();
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry, entries },
+  }));
+}
+
+const { entry, entries } = Astro.props;
+const { Content } = await render(entry);
+const { title, summary, category, facts, aliases, tags, draft } = entry.data;
+
+const factRows = Object.entries(facts);
+const backlinks = getBacklinks(entry, entries);
+---
+
+<Base title={title} description={summary} noindex={draft}>
+  <article>
+    <header class="article-head">
+      <p class="category"><a href={`/world/#${category}`}>{category}</a></p>
+      <h1 class="display page-title">
+        {title}
+        {draft && <span class="draft-badge">черновик</span>}
+      </h1>
+      <p class="summary">{summary}</p>
+    </header>
+
+    <div class="article-grid">
+      <div class="prose">
+        <Content />
+      </div>
+
+      {(factRows.length > 0 || aliases.length > 0 || backlinks.length > 0 || tags.length > 0) && (
+        <aside class="article-aside" aria-label="Справка">
+          {factRows.length > 0 && (
+            <section class="aside-block">
+              <h2>Кратко</h2>
+              <dl class="facts">
+                {factRows.map(([label, value]) => (
+                  <>
+                    <dt>{label}</dt>
+                    <dd>{value}</dd>
+                  </>
+                ))}
+              </dl>
+            </section>
+          )}
+
+          {aliases.length > 0 && (
+            <section class="aside-block">
+              <h2>Другие названия</h2>
+              <p>{aliases.join(', ')}</p>
+            </section>
+          )}
+
+          {backlinks.length > 0 && (
+            <section class="aside-block">
+              <h2>Упоминается в статьях</h2>
+              <ul class="aside-list">
+                {backlinks.map((b) => (
+                  <li><a href={`/world/${b.id}/`}>{b.data.title}</a></li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {tags.length > 0 && (
+            <section class="aside-block">
+              <h2>Метки</h2>
+              <p>{tags.join(', ')}</p>
+            </section>
+          )}
+        </aside>
+      )}
+    </div>
+  </article>
+</Base>

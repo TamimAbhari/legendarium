@@ -1,22 +1,61 @@
-## Development
+# Legendarium: правила проекта
 
-When starting the dev server, use background mode:
+Статичный сайт-энциклопедия авторской фэнтези-вселенной на Astro 7 + Tailwind 4, хостинг Vercel, домен legendarium.cc. Язык сайта и всех текстов: русский.
 
+## Главное правило: два слоя лора
+
+1. **Базовый лор («Мир», `src/content/world/`)**: объективные факты от автора. Здесь не должно быть противоречий. Если факт неясен или спорен, не придумывай его: запиши вопрос в `docs/canon.md` и оставь формулировку нейтральной.
+2. **Диегетический слой («Библиотека», появится позже)**: тексты, написанные жителями мира (хронисты, этнографы, орденские писари). Хронист может ошибаться, лукавить и противоречить другим хронистам. Это задумано, а не баг.
+
+Никогда не переноси мнение хрониста в статью «Мир» как факт.
+
+## Структура
+
+- `src/content/world/*.md`: статьи базового лора. Имя файла = адрес страницы: латиницей, kebab-case (`free-people.md` → `/world/free-people/`).
+- `src/content.config.ts`: схема статей. Новые категории добавляются в `CATEGORIES`.
+- `src/pages/world/[slug].astro`: страница статьи. `src/pages/world/index.astro`: оглавление.
+- `src/plugins/remark-wikilinks.mjs` и `src/lib/wikilinks.mjs`: обработка `[[ссылок]]`.
+- `src/styles/global.css`: все токены и стили. Цвета и шрифты только через CSS-переменные.
+- `docs/canon.md`: сводка канона и список нерешённых противоречий. Читай перед правкой лора.
+
+## Формат статьи
+
+```markdown
+---
+title: Свободные
+aliases: [Народ Туманной равнины, Бледнолицые]
+category: Народы
+summary: Одно-два предложения для списков и описания страницы.
+facts:
+  Самоназвание: Kofnamiin
+  Земля: Туманная равнина
+tags: [народ]
+draft: false
+---
+Текст статьи. Ссылки: [[Туманная равнина]] или [[Орден Камня | Орденом Камня]].
 ```
-astro dev --background
-```
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+- Ссылка `[[Название]]` ищет статью по `title` или `aliases` (регистр и ё/е не важны). Если статьи нет, ссылка рисуется красным пунктиром. Это нормально: так видно, что писать дальше. Список таких названий показывает `/world/` в режиме `npm run dev`.
+- Не пиши ссылки с id или путями. Только названия.
+- Категории: Земли, Народы, Организации, События, Личности, Магия, Существа, Понятия.
+- `draft: true` скрывает статью на публичном сайте.
+- Не используй `![[картинка]]` из Obsidian: такие вставки игнорируются.
 
-## Documentation
+## Правила канона
 
-Full documentation: https://docs.astro.build
+- Не называй годов и не вводи новых фактов, которых нет в `docs/canon.md` или в статьях. Календарь пока не решён.
+- Основные названия: **Свободные** (народ Туманной равнины, они же бледнолицые), **Орден Пламени** (если в `docs/canon.md` не сказано иное), **Туманная равнина** (прежнее название: Великая равнина).
+- Кавычки в тексте русские: «ёлочки». Тире длинное.
 
-Consult these guides before working on related tasks:
+## Дизайн
 
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+- Две темы (светлая «известняк», тёмная «чернила»), переключатель в шапке, выбор хранится в localStorage.
+- Шрифты: Cormorant Garamond (заголовки), Literata (текст), оба с кириллицей и подключены локально через `@fontsource`.
+- Ширина текста статьи около 66 символов, межстрочный интервал 1.75.
+- Никаких комментариев, лайков, просмотров, лент новостей и сортировки по дате добавления.
+- Не добавляй декоративную анимацию. Фон и текстуры не должны мешать чтению.
+
+## Команды
+
+- `npm run dev`: локальный сервер.
+- `npm run build`: сборка (проверяй перед коммитом).
