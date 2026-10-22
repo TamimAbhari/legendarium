@@ -1,4 +1,5 @@
 // Превращает [[Цель | подпись]] в обычную ссылку на /world/<slug>/.
+// ![[фото.jpg]] превращается в картинку из src/assets/world/.
 // Если статьи с таким названием или псевдонимом нет, рисует «красную ссылку»:
 // это <span> с пунктирным подчёркиванием, а не битая ссылка.
 
@@ -11,6 +12,8 @@ import { buildIndex, normalize, parseWikilink, WIKILINK_RE } from '../lib/wikili
 export default function remarkWikilinks(options = {}) {
   const contentDir = path.resolve(options.contentDir ?? 'src/content/world');
   const basePath = options.basePath ?? '/world/';
+  // Куда класть картинки: путь от файла статьи до src/assets/world/
+  const imageBase = options.imageBase ?? '../../assets/world/';
 
   return (tree) => {
     const index = buildIndex(contentDir);
@@ -43,7 +46,13 @@ export default function remarkWikilinks(options = {}) {
         last = match.index + full.length;
 
         // ![[картинка.jpeg]] — встраивания Obsidian на сайте не поддерживаются, пропускаем.
-        if (bang === '!') continue;
+        if (bang === '!') {
+          const img = parseWikilink(inner);
+          if (/\.(jpe?g|png|webp|gif|avif)$/i.test(img.target)) {
+            parts.push({ type: 'image', url: `${imageBase}${img.target}`, alt: img.label === img.target ? '' : img.label });
+          }
+          continue;
+        }
 
         const { target, label } = parseWikilink(inner);
         const hit = index.get(normalize(target));

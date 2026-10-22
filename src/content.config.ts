@@ -17,8 +17,12 @@ export const CATEGORIES = [
 // (рукописи хронистов) появятся в отдельной коллекции вместе с Библиотекой.
 const world = defineCollection({
   loader: glob({ base: './src/content/world', pattern: '**/*.{md,mdx}' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
+    // Фото в врезке справа: путь к файлу в src/assets/world/
+    image: image().optional(),
+    imageAlt: z.string().optional(),
+    imageCaption: z.string().optional(),
     // Другие названия: по ним работают [[ссылки]], например [[Бледнолицые]] -> «Свободные».
     aliases: z.array(z.string()).default([]),
     category: z.enum(CATEGORIES),
@@ -35,4 +39,18 @@ const world = defineCollection({
   }),
 });
 
-export const collections = { world };
+export const SHELVES = ['prose', 'poetry', 'chronicles', 'bestiary'] as const;
+
+// Библиотека: тексты, которые читают. Каждая книга имеет свою страницу.
+const library = defineCollection({
+  loader: glob({ base: './src/content/library', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    title: z.string(),
+    author: z.string(),
+    shelf: z.enum(SHELVES),
+    summary: z.string(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { world, library };

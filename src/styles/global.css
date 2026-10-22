@@ -734,3 +734,107 @@ main {
   color: var(--muted);
   font-size: 0.9375rem;
 }
+
+/* ---------- Компактные списки, «два способа читать», фото ---------- */
+
+.entry-list {
+  border-top: 0;
+}
+
+.entry-list li {
+  border-bottom: 0;
+}
+
+.entry-list a {
+  padding-block: 0.6rem;
+}
+
+.page-lead {
+  margin-top: 1rem;
+  max-width: 40rem;
+  color: var(--muted);
+}
+
+.title-list {
+  columns: 2 16rem;
+  column-gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.title-list li {
+  break-inside: avoid;
+  padding-block: 0.2rem;
+}
+
+.title-list a {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+.title-list a:hover {
+  text-decoration: underline;
+}
+
+.two-ways {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 48rem) {
+  .two-ways {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.way {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.way:hover {
+  border-color: var(--accent);
+}
+
+.way-title {
+  font-size: 1.75rem;
+  color: var(--accent);
+}
+
+.prose.verse p {
+  white-space: pre-line;
+}
+
+.aside-figure {
+  margin: 0 0 1rem;
+}
+
+.aside-figure img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+}
+
+.aside-figure figcaption {
+  margin-top: 0.4rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.spine {
+  text-decoration: none;
+}
+
+a.spine:hover {
+  filter: brightness(1.12);
+}

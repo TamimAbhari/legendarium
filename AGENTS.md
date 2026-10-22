@@ -60,3 +60,14 @@ draft: false
 
 - `npm run dev`: локальный сервер.
 - `npm run build`: сборка (проверяй перед коммитом).
+
+## Фото
+
+- Файлы кладутся в `src/assets/world/` (имена латиницей, jpg/png/webp). Astro сам делает нужные размеры и webp.
+- Фото во врезке справа: в начале статьи `image: ../../assets/world/fog-plain.jpg`, по желанию `imageAlt` и `imageCaption`.
+- Фото в тексте: `![[fog-plain.jpg]]` (как в Obsidian) или `![подпись](../../assets/world/fog-plain.jpg)`.
+
+## Библиотека
+
+- Тексты лежат в `src/content/library/*.md`, поля: `title`, `author`, `shelf` (prose, poetry, chronicles, bestiary), `summary`. Каждая книга получает страницу `/library/<имя-файла>/` и корешок на полке.
+- Энциклопедия (`/world/`) отвечает на вопрос «что известно о мире», библиотека (`/library/`) даёт тексты для чтения, в том числе от лица жителей мира.

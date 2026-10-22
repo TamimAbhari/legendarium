@@ -37,6 +37,20 @@ const start = startSlugs
     </div>
   </section>
 
+  <section class="section" aria-labelledby="ways-title">
+    <h2 class="section-title" id="ways-title">Два способа читать</h2>
+    <div class="two-ways">
+      <a class="way" href="/world/">
+        <span class="way-title display">Энциклопедия</span>
+        <span>Справка о мире: земли, народы, организации, события и магия. Здесь только факты от автора.</span>
+      </a>
+      <a class="way" href="/library/">
+        <span class="way-title display">Библиотека</span>
+        <span>Тексты для чтения: рассказы, песни, хроники и записки жителей мира. Герои могут ошибаться.</span>
+      </a>
+    </div>
+  </section>
+
   {start.length > 0 && (
     <section class="section" aria-labelledby="start-title">
       <h2 class="section-title" id="start-title">С чего начать</h2>
@@ -54,9 +68,4 @@ const start = startSlugs
     </section>
   )}
 
-  <section class="section library-teaser">
-    <h2 class="section-title">Библиотека</h2>
-    <p>Рассказы, поэзия, хроники и записки жителей мира, расставленные по полкам.</p>
-    <a class="button" href="/library/">Открыть библиотеку</a>
-  </section>
 </Base>

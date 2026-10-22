@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import { getWorldEntries, getBacklinks } from '../../lib/world';
 
@@ -13,7 +14,7 @@ export async function getStaticPaths() {
 
 const { entry, entries } = Astro.props;
 const { Content } = await render(entry);
-const { title, summary, category, facts, aliases, tags, draft } = entry.data;
+const { title, summary, category, facts, aliases, tags, draft, image, imageAlt, imageCaption } = entry.data;
 
 const factRows = Object.entries(facts);
 const backlinks = getBacklinks(entry, entries);
@@ -35,8 +36,14 @@ const backlinks = getBacklinks(entry, entries);
         <Content />
       </div>
 
-      {(factRows.length > 0 || aliases.length > 0 || backlinks.length > 0 || tags.length > 0) && (
+      {(image || factRows.length > 0 || aliases.length > 0 || backlinks.length > 0 || tags.length > 0) && (
         <aside class="article-aside" aria-label="Справка">
+          {image && (
+            <figure class="aside-figure">
+              <Image src={image} alt={imageAlt ?? title} widths={[272, 544]} sizes="272px" />
+              {imageCaption && <figcaption>{imageCaption}</figcaption>}
+            </figure>
+          )}
           {factRows.length > 0 && (
             <section class="aside-block">
               <h2>Кратко</h2>
