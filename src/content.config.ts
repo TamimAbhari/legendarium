@@ -29,6 +29,9 @@ const world = defineCollection({
     tags: z.array(z.string()).default([]),
     // Черновики видны только при `npm run dev`.
     draft: z.boolean().default(false),
+    // Фракции показываются карточками на главной в порядке `order`.
+    faction: z.boolean().default(false),
+    order: z.number().default(100),
   }),
 });
 

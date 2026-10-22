@@ -1,26 +1,40 @@
 ---
 import Base from '../layouts/Base.astro';
-import { getWorldEntries, groupByCategory } from '../lib/world';
+import { getWorldEntries } from '../lib/world';
 
 const entries = await getWorldEntries();
+const factions = entries.filter((e) => e.data.faction).sort((a, b) => a.data.order - b.data.order);
 
-// Статьи для знакомства с миром: порядок задаёт автор.
-const startSlugs = ['continent', 'free-people', 'order', 'great-war'];
+const startSlugs = ['continent', 'free-people', 'great-war'];
 const start = startSlugs
   .map((slug) => entries.find((e) => e.id === slug))
   .filter((e): e is NonNullable<typeof e> => Boolean(e));
-
-const groups = groupByCategory(entries);
 ---
 
 <Base>
   <section class="hero">
     <h1 class="display">Legendarium</h1>
-    <p class="lead">
-      Авторская энциклопедия вымышленного мира: земли, народы, ордена и магия. Здесь собрано то, что
-      известно о нём наверняка.
+    <p>
+      Legendarium — оригинальный авторский мир, а этот сайт — его первоисточник: всё, что известно о
+      мире, собрано и записано здесь. Я, Abhari Tamim, создатель этого мира и автор всех материалов.
+      Цель проекта — создать и постоянно расширять большой, подробно проработанный мир со своей
+      историей, культурой, языками и верованиями, а также писать по нему художественные
+      произведения. На сайте две части: энциклопедия, где изложены факты о мире, и библиотека, где
+      лежат рассказы, стихи и рукописи, написанные от лица жителей этого мира.
     </p>
-    <a class="button" href="/world/">Читать о мире</a>
+  </section>
+
+  <section class="section" aria-labelledby="factions-title">
+    <h2 class="section-title" id="factions-title">Фракции</h2>
+    <div class="faction-scroller" tabindex="0" role="region" aria-label="Фракции, прокручивается по горизонтали">
+      {factions.map((f) => (
+        <a class="faction-card" href={`/world/${f.id}/`}>
+          <span class="fc-kind">{f.data.category}</span>
+          <span class="fc-title display">{f.data.title}</span>
+          <span class="fc-summary">{f.data.summary}</span>
+        </a>
+      ))}
+    </div>
   </section>
 
   {start.length > 0 && (
@@ -36,20 +50,13 @@ const groups = groupByCategory(entries);
           </li>
         ))}
       </ul>
+      <p style="margin-top: 1.25rem;"><a href="/world/">Все статьи энциклопедии</a></p>
     </section>
   )}
 
-  {groups.length > 0 && (
-    <section class="section" aria-labelledby="index-title">
-      <h2 class="section-title" id="index-title">Разделы энциклопедии</h2>
-      <ul class="aside-list" style="columns: 14rem auto; column-gap: 2rem;">
-        {groups.map((group) => (
-          <li>
-            <a href={`/world/#${group.category}`}>{group.category}</a>
-            <span style="color: var(--muted);"> — {group.entries.length}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
+  <section class="section library-teaser">
+    <h2 class="section-title">Библиотека</h2>
+    <p>Рассказы, поэзия, хроники и записки жителей мира, расставленные по полкам.</p>
+    <a class="button" href="/library/">Открыть библиотеку</a>
+  </section>
 </Base>

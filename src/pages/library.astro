@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import { shelves } from '../data/library';
+
+const heights = [15, 17, 14, 18, 16, 13, 17];
+---
+
+<Base title="Библиотека" description="Художественная проза, поэзия и рукописи жителей мира, расставленные по полкам.">
+  <h1 class="display page-title">Библиотека</h1>
+  <p class="lib-lead">
+    Выберите полку. Здесь будут рассказы и стихи автора, а также хроники и записки, написанные
+    жителями мира. Хронист может ошибаться: это взгляд героя, а не факт.
+  </p>
+
+  <div class="lib-filters" role="group" aria-label="Полки">
+    <button type="button" class="chip" data-shelf="all" aria-pressed="true">Все полки</button>
+    {shelves.map((s) => (
+      <button type="button" class="chip" data-shelf={s.id} aria-pressed="false">{s.title}</button>
+    ))}
+  </div>
+
+  <div class="lib-room">
+    {shelves.map((shelf) => (
+      <section class="shelf" data-shelf={shelf.id} aria-labelledby={`shelf-${shelf.id}`}>
+        <h2 class="category-heading" id={`shelf-${shelf.id}`}>{shelf.title}</h2>
+        <p class="shelf-desc">{shelf.description}</p>
+        <ul class="spines">
+          {shelf.books.map((book, i) => (
+            <li class="spine" style={`height:${heights[i % heights.length]}rem`}>
+              <span class="spine-title">{book.title}</span>
+              <span class="spine-author">{book.author}</span>
+            </li>
+          ))}
+          {Array.from({ length: shelf.slots }).map((_, i) => (
+            <li class="spine spine-empty" style={`height:${heights[(i + shelf.books.length + 2) % heights.length]}rem`} aria-hidden="true"></li>
+          ))}
+        </ul>
+        <div class="shelf-board"></div>
+        {shelf.books.length === 0 && <p class="shelf-empty">Книги появятся здесь скоро.</p>}
+      </section>
+    ))}
+  </div>
+
+  <script>
+    const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+    const shelves = document.querySelectorAll<HTMLElement>('.shelf');
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        const id = chip.dataset.shelf;
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        shelves.forEach((s) => (s.hidden = id !== 'all' && s.dataset.shelf !== id));
+      }),
+    );
+  </script>
+</Base>
