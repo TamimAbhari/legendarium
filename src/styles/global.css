@@ -838,3 +838,13 @@ main {
 a.spine:hover {
   filter: brightness(1.12);
 }
+
+/* Корешки стоят на полке: ссылка занимает всю высоту корешка. */
+.spines > li {
+  display: flex;
+  flex: none;
+}
+
+.spines > li > .spine {
+  height: 100%;
+}
